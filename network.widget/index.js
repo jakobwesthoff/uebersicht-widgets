@@ -1,4 +1,4 @@
-//const foo = {
+const foo = {
   ui: {
     interfaces: {
       'en0': 'wifi',
@@ -23,7 +23,13 @@
   },
 
   afterRender(element) {
+    const container = $('.container', element);
+
     uebersicht.makeBgSlice($('canvas.bg', element).get(0));
+
+    container.on('click', '.value', event =>
+      window.prompt("", $(event.target).text())
+    );
   },
 
   update(output, element) {
@@ -43,12 +49,12 @@
       }
     });
     const externalNode = $('.interface-external', element)
-      if (ips.external === "") {
-        externalNode.parent().css("display", "none");
-      } else {
-        externalNode.parent().css("display", "inherit");
-        externalNode.text(ips.external);
-      }
+    if (ips.external === "") {
+      externalNode.parent().css("display", "none");
+    } else {
+      externalNode.parent().css("display", "inherit");
+      externalNode.text(ips.external);
+    }
   },
 
   buildCommand() {
@@ -142,5 +148,7 @@
 
     .ip
       margin-top: $ipSpacing
+      cursor: pointer
+      -webkit-user-select: none
 `
-//};
+};
