@@ -2,15 +2,12 @@
   ui: {
     radius: 30,
     width: 80,
-    height: 80,
-    rename: {
-      "/dev/disk2": "Macintosh HD"
-    }
+    height: 80
   },
 
-  command: "/usr/local/opt/coreutils/libexec/gnubin/df",
+  command: "/usr/local/opt/coreutils/libexec/gnubin/df; echo -e \"\\0\"; diskutil list -plist | plutil -convert json -o - -",
 
-  refreshFrequency: 5000,
+  refreshFrequency: 15000,
 
   render(output) {
     return '<div class="container"><canvas class="bg"></canvas><div class="charts"></div></div>';
@@ -20,7 +17,7 @@
     uebersicht.makeBgSlice($('canvas.bg', element).get(0));
   },
 
-  update(output, element) {
+  processDfOutput(output) {
     const lines = output.trim().split("\n");
     const titles = lines.shift().split(/\s+/);
     const entries = lines.map(line => {
@@ -30,8 +27,36 @@
       );
       return entry;
     });
+    return entries;
+  },
 
-    const charts = this.preprocess(entries).map(
+  processDiskutilOutput(output) {
+    const document = output.trim();
+    const plist = JSON.parse(document);
+
+    const names = {};
+
+    plist["AllDisksAndPartitions"].forEach(
+      disk => {
+        if (disk["Partitions"] !== undefined) {
+          disk["Partitions"].forEach(
+            partition => names[`/dev/${partition["DeviceIdentifier"]}`] = partition["VolumeName"]
+          )
+        } else {
+          names[`/dev/${disk["DeviceIdentifier"]}`] = disk["VolumeName"]
+        }
+      }
+    );
+
+    return names;
+  },
+
+  update(output, element) {
+    const outputs = output.split("\0");
+    const dfEntries = this.processDfOutput(outputs[0]);
+    const diskutilEntries = this.processDiskutilOutput(outputs[1]);
+
+    const charts = this.preprocess(dfEntries, diskutilEntries).map(
       entry => this.renderChart(entry["1K-blocks"], entry["Used"], 'foobar', `${entry["Filesystem"]} (${entry["Use%"]})`)
     );
 
@@ -46,30 +71,31 @@
     );
   },
 
-  preprocess(entries) {
-    return entries.map(entry => {
+  preprocess(dfEntries, diskutilEntries) {
+    return dfEntries.map(entry => {
       switch (true) {
         case entry["Filesystem"].indexOf("_afpovertcp") !== -1:
-          return this.preprocessRename(
-            this.preprocessAfp(
-              entry
-            )
+          return this.preprocessAfp(
+            entry
           );
         default:
-          return this.preprocessRename(
-            entry
+          return this.preprocessName(
+            entry, diskutilEntries
           );
       }
     });
   },
 
-  preprocessRename(entry) {
-    if (this.ui.rename !== undefined) {
-      const renameInfo = this.ui.rename[entry["Filesystem"]];
-      if (renameInfo !== undefined) {
-        entry["Filesystem"] = renameInfo;
-      }
+  preprocessName(entry, diskutilEntries) {
+    if (entry["Filesystem"].indexOf("/dev/") !== 0) {
+      return entry;
     }
+
+    if (diskutilEntries[entry["Filesystem"]] === undefined) {
+      return entry;
+    }
+
+    entry["Filesystem"] = diskutilEntries[entry["Filesystem"]];
 
     return entry;
   },
