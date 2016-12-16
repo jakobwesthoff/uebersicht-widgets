@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns="http://www.w3.org/2000/svg"
+     width="100%"
+     height="100%"
+     viewBox="0 0 2560 1600"
+     version="1.1"
+     style="fill-rule:evenodd; clip-rule:evenodd; stroke-linejoin:round; stroke-miterlimit:1.41421;">
+  <style>
+    /* <![CDATA[ */
+    .bar {
+      filter: url(#barDropShadow);
+    }
+    .bar.grey {
+      fill: url(#greyBarLinear);
+    }
+    .bar.red {
+      fill: url(#redBarLinear);
+    }
+    /* ]]> */
+  </style>
+  <defs>
+    <radialGradient id="backgroundRadial"
+                    cx="0" cy="0" r="1"
+                    gradientUnits="userSpaceOnUse"
+                    gradientTransform="matrix(1862.43,-9.58199,5.99375,1163.04,1282.72,204.907)">
+      <stop offset="0%" style="stop-color:rgb(137,145,131);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(45,66,76);stop-opacity:1" />
+    </radialGradient>
+
+    <linearGradient id="greyBarLinear"
+                    x1="0" y1="0" x2="0" y2="100%">
+      <stop offset="0%" style="stop-color:white; stop-opacity:1" />
+      <stop offset="50%" style="stop-color:rgb(232,231,231); stop-opacity:1" />
+      <stop offset="80%" style="stop-color:rgb(200,200,200); stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(163,161,162); stop-opacity:1" />
+    </linearGradient>
+
+    <linearGradient id="redBarLinear"
+                    x1="0" y1="0" x2="0" y2="100%">
+      <stop offset="0%" style="stop-color:rgb(236, 0, 5); stop-opacity:1" />
+      <stop offset="50%" style="stop-color:rgb(188,0,25); stop-opacity:1" />
+      <stop offset="80%" style="stop-color:rgb(153,0,25); stop-opacity:1" />
+      <stop offset="100%" style="stop-color:rgb(100,0,7); stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <filter id="barDropShadow" x="-10" y="-10" width="+20" height="+20">
+    <!-- Move shadow by offset -->
+    <feOffset in="SourceAlpha"
+              dx="0" dy="4" />
+
+    <!-- Blur shadow -->
+    <feGaussianBlur stdDeviation="3" />
+
+    <!-- Apply transparency -->
+    <feComponentTransfer>
+      <feFuncA type="linear" slope="0.7" />
+    </feComponentTransfer>
+
+    <!-- Display original shape and shadow -->
+    <feMerge>
+      <feMergeNode />
+      <feMergeNode in="SourceGraphic" />
+    </feMerge>
+  </filter>
+
+  <g id="Background">
+    <rect x="0" y="0" width="2560" height="1600" style="fill:url(#backgroundRadial);" />
+  </g>
+
+  <g id="Bars">
+    <rect id="Bar1"
+          class="grey bar"
+          x="562" y="0"
+          width="16"
+          height="150" />
+
+    <rect id="Bar2"
+          class="grey bar"
+          x="515" y="0"
+          width="16"
+          height="382" />
+
+    <rect id="Bar3"
+          class="grey bar"
+          x="470" y="0"
+          width="16"
+          height="300" />
+
+
+    <rect id="Bar4"
+          class="grey bar"
+          x="428" y="0"
+          width="16"
+          height="440" />
+
+    <rect id="Bar5"
+          class="grey bar"
+          x="412" y="0"
+          width="16"
+          height="467" />
+
+    <rect id="Bar4"
+          class="grey bar"
+          x="428" y="0"
+          width="16"
+          height="440" />
+
+
+    <rect id="Bar6"
+          class="grey bar"
+          x="376" y="0"
+          width="16"
+          height="586" />
+
+    <rect id="Bar8"
+          class="red bar"
+          x="340" y="0"
+          width="16"
+          height="772" />
+
+    <rect id="Bar7"
+          class="grey bar"
+          x="350" y="0"
+          width="16"
+          height="335" />
+
+    <rect id="Bar13"
+          class="grey bar"
+          x="278" y="0"
+          width="16"
+          height="620" />
+
+    <rect id="Bar12"
+          class="grey bar"
+          x="292" y="0"
+          width="16"
+          height="497" />
+
+    <rect id="Bar15"
+          class="grey bar"
+          x="267" y="0"
+          width="16"
+          height="440" />
+
+    <rect id="Bar14"
+          class="grey bar"
+          x="279" y="0"
+          width="16"
+          height="415" />
+
+    <rect id="Bar11"
+          class="grey bar"
+          x="308  " y="0"
+          width="16"
+          height="465" />
+
+    <rect id="Bar9"
+          class="grey bar"
+          x="316" y="0"
+          width="16"
+          height="415" />
+
+    <rect id="Bar10"
+          class="grey bar"
+          x="302" y="0"
+          width="16"
+          height="380" />
+
+    <rect id="Bar16"
+          class="grey bar"
+          x="215" y="0"
+          width="16"
+          height="295" />
+  </g>
+</svg>
